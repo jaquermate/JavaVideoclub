@@ -1,22 +1,69 @@
 package codigo;
 
+import java.awt.Desktop;
+import java.net.URI;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
- * @author XP
+ * @author jmartinezdejuan
  */
 public class VentanaInicio extends javax.swing.JFrame {
 
+    Connection conexion;//almacena la conexion del servidor de BBDD
+    Statement estado; //almacena el estado de la conexion
+    ResultSet resultado;//amacena el resultado de la consulta a la BBDD
+    String nombreLogin ="";
+    String contraseña="";
+    int i=0;
     /**
      * Creates new form VentanaInicio
      */
+    public void consulta1() {
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            //indico los parametros de la conexion
+            conexion = DriverManager.getConnection("jdbc:mysql://10.211.55.8/videoclub", "root", "qwerty");
+            //realizo la conexion
+            estado = conexion.createStatement();
+            //realizo la consulta
+            resultado = estado.executeQuery("SELECT * FROM videoclub.usuarios");
+
+            while (resultado.next()) {
+                // String[] aux = new String[3];
+//                aux[0] = resultado.getString("DNI");
+//                aux[1] = resultado.getString("Nombre");
+//                aux[2] = resultado.getString("Apellidos");
+                //lista.add(aux);
+                System.out.println(resultado.getString("Nombre"));
+            }
+
+           
+        } catch (ClassNotFoundException ex) {
+            System.out.println("No se ha encontrado el driver");
+        } catch (SQLException ex) {
+            System.out.println("NO SE HA PODIDO CONECTAR CON EL SERVIDOR");
+        }
+    }
+
     public VentanaInicio() {
+        
         initComponents();
+        
+        jLabelLoginError.setVisible(false);
+        consulta1();
     }
 
     /**
@@ -28,21 +75,183 @@ public class VentanaInicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jTextFieldUsuario = new javax.swing.JTextField();
+        jButtonContinuar = new javax.swing.JButton();
+        jLabelLoginError = new javax.swing.JLabel();
+        jButtonRegistrarse = new javax.swing.JButton();
+        jPasswordFieldContraseña = new javax.swing.JPasswordField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                formKeyTyped(evt);
+            }
+        });
+
+        jLabel1.setText("Usuario:");
+
+        jLabel2.setText("Contraseña:");
+
+        jLabel3.setText("He olvidado mi contraseña");
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
+
+        jTextFieldUsuario.setText("Jesus Martinez");
+        jTextFieldUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldUsuarioActionPerformed(evt);
+            }
+        });
+
+        jButtonContinuar.setText("Continuar");
+        jButtonContinuar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButtonContinuarMousePressed(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButtonContinuarMouseEntered(evt);
+            }
+        });
+
+        jLabelLoginError.setText("Usuario o contraseña incorrectos");
+
+        jButtonRegistrarse.setText("Registrase");
+        jButtonRegistrarse.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButtonRegistrarseMousePressed(evt);
+            }
+        });
+
+        jPasswordFieldContraseña.setText("5464521");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addComponent(jButtonRegistrarse)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(52, 52, 52)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelLoginError)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addGap(42, 42, 42)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                            .addComponent(jPasswordFieldContraseña))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                .addComponent(jButtonContinuar)
+                .addGap(26, 26, 26))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(86, 86, 86)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextFieldUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jPasswordFieldContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(jButtonContinuar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                        .addComponent(jLabelLoginError, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonRegistrarse)
+                        .addGap(16, 16, 16))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTextFieldUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUsuarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldUsuarioActionPerformed
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        //jLabel3.setText("<html><a href="http://www.google.com/">Enlace</a></html>"));
+        try {
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                    desktop.browse(new URI("https://help.netflix.com/es-es/node/365"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
+
+    }//GEN-LAST:event_formKeyTyped
+
+    private void jButtonContinuarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonContinuarMousePressed
+       jLabelLoginError.setVisible(false);
+       nombreLogin = jTextFieldUsuario.getText();
+       contraseña = jPasswordFieldContraseña.getText();
+       boolean usuarioEncontrado = false;
+       try {
+            
+            //indico los parametros de la conexion
+            conexion = DriverManager.getConnection("jdbc:mysql://10.211.55.8/videoclub", "root", "qwerty");
+            //realizo la conexion
+            estado = conexion.createStatement();
+            //realizo la consulta
+            resultado = estado.executeQuery("SELECT * FROM videoclub.usuarios");
+
+            while (resultado.next() && !usuarioEncontrado) {
+                if((resultado.getString("Nombre")+" "+(resultado.getString("Apellido"))).equals(nombreLogin) && resultado.getString("DNI").equals(contraseña)){//){
+                    jTextFieldUsuario.setText("Login Correcto");
+                    System.out.println("ENHORABUENA");
+                    usuarioEncontrado=true;
+                    this.setVisible(false);
+                    //new LoginCorrecto().setVisible(true);
+                    new LoginCorrecto().mensajeLogCorrecto(nombreLogin, contraseña);
+                    this.setBounds(0, 0, 0, 0);
+                    
+                } else{
+                    jLabelLoginError.setVisible(true);                                    
+                }
+                
+            }
+
+           
+        }catch (SQLException ex) {
+            Logger.getLogger(VentanaInicio.class.getName()).log(Level.SEVERE, null, ex);
+            jTextFieldUsuario.setText("Error");
+        }
+    }//GEN-LAST:event_jButtonContinuarMousePressed
+
+    private void jButtonContinuarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonContinuarMouseEntered
+
+    }//GEN-LAST:event_jButtonContinuarMouseEntered
+
+    private void jButtonRegistrarseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonRegistrarseMousePressed
+       this.setVisible(false);
+       new Registrarse().setVisible(true);
+    }//GEN-LAST:event_jButtonRegistrarseMousePressed
 
     /**
      * @param args the command line arguments
@@ -75,10 +284,19 @@ public class VentanaInicio extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new VentanaInicio().setVisible(true);
+                
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonContinuar;
+    private javax.swing.JButton jButtonRegistrarse;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabelLoginError;
+    private javax.swing.JPasswordField jPasswordFieldContraseña;
+    private javax.swing.JTextField jTextFieldUsuario;
     // End of variables declaration//GEN-END:variables
 }
