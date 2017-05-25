@@ -10,16 +10,26 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.net.URI;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author jmartinezdejuan
  */
 public class Registrarse extends javax.swing.JFrame {
-
+    Connection conexion;//almacena la conexion del servidor de BBDD
+    Statement estado; //almacena el estado de la conexion
+    ResultSet resultado;//amacena el resultado de la consulta a la BBDD
     /**
      * Creates new form Registrarse
      */
+    
     public Registrarse() {
         initComponents();
     }
@@ -40,6 +50,16 @@ public class Registrarse extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public void añadeUsuario(String miQuery) throws SQLException{
+        //indico los parametros de la conexion
+            conexion = DriverManager.getConnection("jdbc:mysql://10.211.55.8/videoclub", "root", "qwerty");
+            //realizo la conexion
+            estado = conexion.createStatement();
+            //realizo la consulta
+            
+            estado.executeUpdate(miQuery);
+
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -179,9 +199,15 @@ public class Registrarse extends javax.swing.JFrame {
         String sintaxisPrevia = "";
         valoresSQL = (valoresSQL + jTextFieldDNI.getText() + ", '" + jTextFieldNombre.getText() + "', '" + jTextFieldApellido.getText() + "', 0, '" + jTextFieldEmail.getText() + "'");
         System.out.println("hola" + valoresSQL);
-        sintaxisPrevia = sintaxisPrevia + "INSERT INTO `usuarios` (`DNI`, `Nombre`, `Apellido`, `Penalizacion`, `email`) VALUES\n"
-                + " (";
+        sintaxisPrevia = sintaxisPrevia + "INSERT INTO usuarios (DNI, Nombre, Apellido, Penalizacion, email) VALUES (";
+                
+        
         valoresSQL = sintaxisPrevia + valoresSQL + ");";
+        try {
+            añadeUsuario(valoresSQL);
+        } catch (SQLException ex) {
+            Logger.getLogger(Registrarse.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.out.println(valoresSQL);
         copiaPortapapeles(valoresSQL);
         jDialog1.setBounds(350, 200, 400, 200);
@@ -225,7 +251,8 @@ public class Registrarse extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Registrarse().setVisible(true);
+               // new Registrarse().setVisible(true);
+               
             }
         });
     }

@@ -68,7 +68,7 @@
         <Property name="text" type="java.lang.String" value="No soy un robot"/>
       </Properties>
       <Events>
-        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jCheckBox1KeyReleased"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jCheckBox1MouseClicked"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonVolver">

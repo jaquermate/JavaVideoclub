@@ -19,11 +19,10 @@ public class LoginCorrecto extends javax.swing.JFrame {
     public LoginCorrecto() {
         this.setVisible(true);
         initComponents();
-        jLabel1.setText("Enhorabuena");
+        
+       // jLabel1.setText("Enhorabuena "+nombreLogin+" has sido logueado correctamente");  
     }
-    public void mensajeLogCorrecto(String logName,String DNI){
-        jLabel1.setText("Enhorabuena "+logName+" has sido logueado correctamente");   
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -43,9 +42,9 @@ public class LoginCorrecto extends javax.swing.JFrame {
         jLabel1.setText("jLabel1");
 
         jCheckBox1.setText("No soy un robot");
-        jCheckBox1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jCheckBox1KeyReleased(evt);
+        jCheckBox1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCheckBox1MouseClicked(evt);
             }
         });
 
@@ -89,16 +88,18 @@ public class LoginCorrecto extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jCheckBox1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jCheckBox1KeyReleased
-      //  CERRAR ESTA VENTANA Y AVANZAR A LO SIGUIENTE
-     
-    }//GEN-LAST:event_jCheckBox1KeyReleased
-
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         this.setVisible(false);
         new VentanaInicio().setVisible(true);
         
     }//GEN-LAST:event_jButtonVolverActionPerformed
+
+    private void jCheckBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox1MouseClicked
+        //  CERRAR ESTA VENTANA Y AVANZAR A LO SIGUIENTE
+      this.setVisible(false);
+      PaginaInicio miPag = new PaginaInicio();
+      miPag.setVisible(true);
+    }//GEN-LAST:event_jCheckBox1MouseClicked
 
     /**
      * @param args the command line arguments

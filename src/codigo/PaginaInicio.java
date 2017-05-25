@@ -9,15 +9,17 @@ package codigo;
  *
  * @author jmartinezdejuan
  */
-public class PaginaInicio extends javax.swing.JFrame {
+public class PaginaInicio extends VariablesComunes {
 
     /**
      * Creates new form PaginaInicio
      */
     public PaginaInicio() {
         initComponents();
-       // VentanaInicio miVentana=new VentanaInicio();
+        
         //String miNombre=miVentana.nombreLogin;
+       // String miNombre=nombreLogin;
+        
       //  jLabel1.setText(miNombre);
     }
 
