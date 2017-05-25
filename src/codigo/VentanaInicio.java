@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author jmartinezdejuan
  */
-public class VentanaInicio extends javax.swing.JFrame {
+public class VentanaInicio extends VariablesComunes {
 
     Connection conexion;//almacena la conexion del servidor de BBDD
     Statement estado; //almacena el estado de la conexion
@@ -27,6 +27,7 @@ public class VentanaInicio extends javax.swing.JFrame {
     String nombreLogin ="";
     String contraseña="";
     int i=0;
+    
     /**
      * Creates new form VentanaInicio
      */
@@ -61,7 +62,6 @@ public class VentanaInicio extends javax.swing.JFrame {
     public VentanaInicio() {
         
         initComponents();
-        
         jLabelLoginError.setVisible(false);
         consulta1();
     }
@@ -75,6 +75,8 @@ public class VentanaInicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanelLoginCorrecto = new javax.swing.JPanel();
+        jLabelMensajeEnhorabuena = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -83,6 +85,25 @@ public class VentanaInicio extends javax.swing.JFrame {
         jLabelLoginError = new javax.swing.JLabel();
         jButtonRegistrarse = new javax.swing.JButton();
         jPasswordFieldContraseña = new javax.swing.JPasswordField();
+
+        jLabelMensajeEnhorabuena.setText("HOLA");
+
+        javax.swing.GroupLayout jPanelLoginCorrectoLayout = new javax.swing.GroupLayout(jPanelLoginCorrecto);
+        jPanelLoginCorrecto.setLayout(jPanelLoginCorrectoLayout);
+        jPanelLoginCorrectoLayout.setHorizontalGroup(
+            jPanelLoginCorrectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLoginCorrectoLayout.createSequentialGroup()
+                .addGap(108, 108, 108)
+                .addComponent(jLabelMensajeEnhorabuena, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(196, Short.MAX_VALUE))
+        );
+        jPanelLoginCorrectoLayout.setVerticalGroup(
+            jPanelLoginCorrectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLoginCorrectoLayout.createSequentialGroup()
+                .addGap(142, 142, 142)
+                .addComponent(jLabelMensajeEnhorabuena, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(153, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -152,9 +173,9 @@ public class VentanaInicio extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTextFieldUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
                             .addComponent(jPasswordFieldContraseña))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(jButtonContinuar)
-                .addGap(26, 26, 26))
+                .addGap(106, 106, 106))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,19 +188,17 @@ public class VentanaInicio extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jPasswordFieldContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(jButtonContinuar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                        .addComponent(jLabelLoginError, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonRegistrarse)
-                        .addGap(16, 16, 16))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(jLabelLoginError, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonRegistrarse)
+                .addGap(16, 16, 16))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(200, 200, 200)
+                .addComponent(jButtonContinuar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addContainerGap())
         );
 
         pack();
@@ -201,6 +220,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
@@ -227,9 +247,9 @@ public class VentanaInicio extends javax.swing.JFrame {
                     System.out.println("ENHORABUENA");
                     usuarioEncontrado=true;
                     this.setVisible(false);
-                    //new LoginCorrecto().setVisible(true);
-                    new LoginCorrecto().mensajeLogCorrecto(nombreLogin, contraseña);
-                    this.setBounds(0, 0, 0, 0);
+                    jPanelLoginCorrecto.setVisible(true);
+                    jPanelLoginCorrecto.setBounds(200, 200, 500, 800);
+                    jLabelMensajeEnhorabuena.setText("Enhorabuena "+nombreLogin+" has sido logueado correctamente");
                     
                 } else{
                     jLabelLoginError.setVisible(true);                                    
@@ -296,6 +316,8 @@ public class VentanaInicio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabelLoginError;
+    private javax.swing.JLabel jLabelMensajeEnhorabuena;
+    private javax.swing.JPanel jPanelLoginCorrecto;
     private javax.swing.JPasswordField jPasswordFieldContraseña;
     private javax.swing.JTextField jTextFieldUsuario;
     // End of variables declaration//GEN-END:variables
