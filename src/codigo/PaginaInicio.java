@@ -9,7 +9,7 @@ package codigo;
  *
  * @author jmartinezdejuan
  */
-public class PaginaInicio extends VariablesComunes {
+public class PaginaInicio extends javax.swing.JFrame {
 
     /**
      * Creates new form PaginaInicio

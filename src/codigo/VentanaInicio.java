@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author jmartinezdejuan
  */
-public class VentanaInicio extends VariablesComunes {
+public class VentanaInicio extends javax.swing.JFrame {
 
     Connection conexion;//almacena la conexion del servidor de BBDD
     Statement estado; //almacena el estado de la conexion
@@ -77,6 +77,8 @@ public class VentanaInicio extends VariablesComunes {
 
         jPanelLoginCorrecto = new javax.swing.JPanel();
         jLabelMensajeEnhorabuena = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jButtonVolver = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -86,23 +88,50 @@ public class VentanaInicio extends VariablesComunes {
         jButtonRegistrarse = new javax.swing.JButton();
         jPasswordFieldContraseña = new javax.swing.JPasswordField();
 
-        jLabelMensajeEnhorabuena.setText("HOLA");
+        jLabelMensajeEnhorabuena.setText("jLabel1");
+
+        jCheckBox1.setText("No soy un robot");
+        jCheckBox1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCheckBox1MouseClicked(evt);
+            }
+        });
+
+        jButtonVolver.setText("Volver");
+        jButtonVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVolverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelLoginCorrectoLayout = new javax.swing.GroupLayout(jPanelLoginCorrecto);
         jPanelLoginCorrecto.setLayout(jPanelLoginCorrectoLayout);
         jPanelLoginCorrectoLayout.setHorizontalGroup(
             jPanelLoginCorrectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelLoginCorrectoLayout.createSequentialGroup()
-                .addGap(108, 108, 108)
-                .addComponent(jLabelMensajeEnhorabuena, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(196, Short.MAX_VALUE))
+                .addGroup(jPanelLoginCorrectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelLoginCorrectoLayout.createSequentialGroup()
+                        .addGap(71, 71, 71)
+                        .addComponent(jCheckBox1))
+                    .addGroup(jPanelLoginCorrectoLayout.createSequentialGroup()
+                        .addGap(102, 102, 102)
+                        .addComponent(jLabelMensajeEnhorabuena, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(46, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLoginCorrectoLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButtonVolver)
+                .addGap(56, 56, 56))
         );
         jPanelLoginCorrectoLayout.setVerticalGroup(
             jPanelLoginCorrectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelLoginCorrectoLayout.createSequentialGroup()
-                .addGap(142, 142, 142)
-                .addComponent(jLabelMensajeEnhorabuena, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(153, Short.MAX_VALUE))
+                .addGap(72, 72, 72)
+                .addComponent(jLabelMensajeEnhorabuena, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(57, 57, 57)
+                .addComponent(jCheckBox1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addComponent(jButtonVolver)
+                .addGap(58, 58, 58))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -273,6 +302,19 @@ public class VentanaInicio extends VariablesComunes {
        new Registrarse().setVisible(true);
     }//GEN-LAST:event_jButtonRegistrarseMousePressed
 
+    private void jCheckBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox1MouseClicked
+        //  CERRAR ESTA VENTANA Y AVANZAR A LO SIGUIENTE
+        this.setVisible(false);
+        PaginaInicio miPag = new PaginaInicio();
+        miPag.setVisible(true);
+    }//GEN-LAST:event_jCheckBox1MouseClicked
+
+    private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
+//        this.setVisible(false);
+//        new VentanaInicio().setVisible(true);
+
+    }//GEN-LAST:event_jButtonVolverActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -312,6 +354,8 @@ public class VentanaInicio extends VariablesComunes {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonContinuar;
     private javax.swing.JButton jButtonRegistrarse;
+    private javax.swing.JButton jButtonVolver;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
