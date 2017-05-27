@@ -1,7 +1,9 @@
 package codigo;
 
 import java.awt.Desktop;
+import java.awt.Image;
 import java.net.URI;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -9,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -62,10 +65,13 @@ public class VentanaInicio extends javax.swing.JFrame {
     public VentanaInicio() {
         
         initComponents();
+        jPanelLogin.setVisible(true);
         jLabelLoginError.setVisible(false);
+        jPanelMain.setVisible(false);
+        jPanelLoginCorrecto.setVisible(false);
         consulta1();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -79,6 +85,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         jLabelMensajeEnhorabuena = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
         jButtonVolver = new javax.swing.JButton();
+        jPanelLogin = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -87,6 +94,19 @@ public class VentanaInicio extends javax.swing.JFrame {
         jLabelLoginError = new javax.swing.JLabel();
         jButtonRegistrarse = new javax.swing.JButton();
         jPasswordFieldContraseña = new javax.swing.JPasswordField();
+        jPanelMain = new javax.swing.JPanel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabelName = new javax.swing.JLabel();
+        jLabelFotoUsuario = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jPanelPeliculas = new javax.swing.JPanel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                formKeyTyped(evt);
+            }
+        });
 
         jLabelMensajeEnhorabuena.setText("jLabel1");
 
@@ -116,7 +136,7 @@ public class VentanaInicio extends javax.swing.JFrame {
                     .addGroup(jPanelLoginCorrectoLayout.createSequentialGroup()
                         .addGap(102, 102, 102)
                         .addComponent(jLabelMensajeEnhorabuena, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(152, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLoginCorrectoLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jButtonVolver)
@@ -133,13 +153,6 @@ public class VentanaInicio extends javax.swing.JFrame {
                 .addComponent(jButtonVolver)
                 .addGap(58, 58, 58))
         );
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                formKeyTyped(evt);
-            }
-        });
 
         jLabel1.setText("Usuario:");
 
@@ -160,12 +173,9 @@ public class VentanaInicio extends javax.swing.JFrame {
         });
 
         jButtonContinuar.setText("Continuar");
-        jButtonContinuar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jButtonContinuarMousePressed(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jButtonContinuarMouseEntered(evt);
+        jButtonContinuar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonContinuarActionPerformed(evt);
             }
         });
 
@@ -180,54 +190,164 @@ public class VentanaInicio extends javax.swing.JFrame {
 
         jPasswordFieldContraseña.setText("5464521");
 
+        javax.swing.GroupLayout jPanelLoginLayout = new javax.swing.GroupLayout(jPanelLogin);
+        jPanelLogin.setLayout(jPanelLoginLayout);
+        jPanelLoginLayout.setHorizontalGroup(
+            jPanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 609, Short.MAX_VALUE)
+            .addGroup(jPanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelLoginLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(jPanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLoginLayout.createSequentialGroup()
+                            .addComponent(jButtonRegistrarse)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanelLoginLayout.createSequentialGroup()
+                            .addGap(9, 9, 9)
+                            .addGroup(jPanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabelLoginError)
+                                .addGroup(jPanelLoginLayout.createSequentialGroup()
+                                    .addGroup(jPanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel1))
+                                    .addGap(42, 42, 42)
+                                    .addGroup(jPanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jTextFieldUsuario)
+                                        .addComponent(jPasswordFieldContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 163, Short.MAX_VALUE)
+                            .addComponent(jButtonContinuar)
+                            .addGap(100, 100, 100)))
+                    .addContainerGap()))
+        );
+        jPanelLoginLayout.setVerticalGroup(
+            jPanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 328, Short.MAX_VALUE)
+            .addGroup(jPanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelLoginLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(jPanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanelLoginLayout.createSequentialGroup()
+                            .addGroup(jPanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel1)
+                                .addComponent(jTextFieldUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(28, 28, 28)
+                            .addGroup(jPanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel2)
+                                .addComponent(jPasswordFieldContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+                            .addComponent(jLabelLoginError, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jButtonRegistrarse)
+                            .addGap(10, 10, 10))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLoginLayout.createSequentialGroup()
+                            .addGap(114, 114, 114)
+                            .addComponent(jButtonContinuar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3)))
+                    .addContainerGap()))
+        );
+
+        jLabelName.setText("jLabel4");
+
+        jLabelFotoUsuario.setText("FotoUsuario");
+
+        jLabel4.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(102, 0, 0));
+        jLabel4.setText("Películas disponibles pa tu body");
+        jLabel4.setToolTipText("");
+
+        javax.swing.GroupLayout jPanelPeliculasLayout = new javax.swing.GroupLayout(jPanelPeliculas);
+        jPanelPeliculas.setLayout(jPanelPeliculasLayout);
+        jPanelPeliculasLayout.setHorizontalGroup(
+            jPanelPeliculasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanelPeliculasLayout.setVerticalGroup(
+            jPanelPeliculasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 596, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanelMainLayout = new javax.swing.GroupLayout(jPanelMain);
+        jPanelMain.setLayout(jPanelMainLayout);
+        jPanelMainLayout.setHorizontalGroup(
+            jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelMainLayout.createSequentialGroup()
+                .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1)
+                    .addGroup(jPanelMainLayout.createSequentialGroup()
+                        .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelMainLayout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanelMainLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 249, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addComponent(jLabelFotoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
+            .addGroup(jPanelMainLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelPeliculas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanelMainLayout.setVerticalGroup(
+            jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelMainLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelFotoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanelMainLayout.createSequentialGroup()
+                        .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(jPanelPeliculas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(jButtonRegistrarse)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelLoginError)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addGap(42, 42, 42)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextFieldUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
-                            .addComponent(jPasswordFieldContraseña))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                .addComponent(jButtonContinuar)
-                .addGap(106, 106, 106))
+            .addGap(0, 949, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanelLoginCorrecto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextFieldUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jPasswordFieldContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                .addComponent(jLabelLoginError, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonRegistrarse)
-                .addGap(16, 16, 16))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(200, 200, 200)
-                .addComponent(jButtonContinuar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addContainerGap())
+            .addGap(0, 978, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanelLoginCorrecto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         pack();
@@ -256,7 +376,34 @@ public class VentanaInicio extends javax.swing.JFrame {
 
     }//GEN-LAST:event_formKeyTyped
 
-    private void jButtonContinuarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonContinuarMousePressed
+    private void jButtonRegistrarseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonRegistrarseMousePressed
+       this.setVisible(false);
+       new Registrarse().setVisible(true);
+    }//GEN-LAST:event_jButtonRegistrarseMousePressed
+
+    private void jCheckBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox1MouseClicked
+        //  CERRAR ESTA VENTANA Y AVANZAR A LO SIGUIENTE
+        jPanelLoginCorrecto.setVisible(false);
+        jPanelMain.setVisible(true);
+        jLabelName.setText(nombreLogin);
+       
+        ImageIcon miImagen=null;
+        URL nombreImagen=null;
+        int anchoImagen=jLabelFotoUsuario.getWidth();
+        int altoImagen=jLabelFotoUsuario.getHeight();
+        nombreImagen=getClass().getResource("/fotosUsuarios/"+contraseña+".jpg");
+        miImagen = new ImageIcon(new ImageIcon(nombreImagen).getImage().getScaledInstance(anchoImagen,altoImagen,Image.SCALE_DEFAULT));
+        jLabelFotoUsuario.setIcon(miImagen);   
+        //miPag.setVisible(true);
+    }//GEN-LAST:event_jCheckBox1MouseClicked
+
+    private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
+//        this.setVisible(false);
+//        new VentanaInicio().setVisible(true);
+
+    }//GEN-LAST:event_jButtonVolverActionPerformed
+
+    private void jButtonContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonContinuarActionPerformed
        jLabelLoginError.setVisible(false);
        nombreLogin = jTextFieldUsuario.getText();
        contraseña = jPasswordFieldContraseña.getText();
@@ -270,18 +417,21 @@ public class VentanaInicio extends javax.swing.JFrame {
             //realizo la consulta
             resultado = estado.executeQuery("SELECT * FROM videoclub.usuarios");
 
-            while (resultado.next() && !usuarioEncontrado) {
-                if((resultado.getString("Nombre")+" "+(resultado.getString("Apellido"))).equals(nombreLogin) && resultado.getString("DNI").equals(contraseña)){//){
+            while (!usuarioEncontrado && resultado.next()) {
+                if((resultado.getString("Nombre")+" "+(resultado.getString("Apellido"))).equals(nombreLogin) && resultado.getString("DNI").equals(contraseña)){
+                   
                     jTextFieldUsuario.setText("Login Correcto");
                     System.out.println("ENHORABUENA");
                     usuarioEncontrado=true;
-                    this.setVisible(false);
+                    jPanelLogin.setVisible(false);
                     jPanelLoginCorrecto.setVisible(true);
-                    jPanelLoginCorrecto.setBounds(200, 200, 500, 800);
+                    jPanelLoginCorrecto.setBounds(400, 400, 500, 800);
                     jLabelMensajeEnhorabuena.setText("Enhorabuena "+nombreLogin+" has sido logueado correctamente");
+                     break;
                     
-                } else{
-                    jLabelLoginError.setVisible(true);                                    
+                } else {
+                    jLabelLoginError.setVisible(true);  
+                    //System.out.println("caca");
                 }
                 
             }
@@ -291,29 +441,7 @@ public class VentanaInicio extends javax.swing.JFrame {
             Logger.getLogger(VentanaInicio.class.getName()).log(Level.SEVERE, null, ex);
             jTextFieldUsuario.setText("Error");
         }
-    }//GEN-LAST:event_jButtonContinuarMousePressed
-
-    private void jButtonContinuarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonContinuarMouseEntered
-
-    }//GEN-LAST:event_jButtonContinuarMouseEntered
-
-    private void jButtonRegistrarseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonRegistrarseMousePressed
-       this.setVisible(false);
-       new Registrarse().setVisible(true);
-    }//GEN-LAST:event_jButtonRegistrarseMousePressed
-
-    private void jCheckBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox1MouseClicked
-        //  CERRAR ESTA VENTANA Y AVANZAR A LO SIGUIENTE
-        this.setVisible(false);
-        PaginaInicio miPag = new PaginaInicio();
-        miPag.setVisible(true);
-    }//GEN-LAST:event_jCheckBox1MouseClicked
-
-    private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
-//        this.setVisible(false);
-//        new VentanaInicio().setVisible(true);
-
-    }//GEN-LAST:event_jButtonVolverActionPerformed
+    }//GEN-LAST:event_jButtonContinuarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -346,6 +474,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new VentanaInicio().setVisible(true);
+               
                 
             }
         });
@@ -359,10 +488,17 @@ public class VentanaInicio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabelFotoUsuario;
     private javax.swing.JLabel jLabelLoginError;
     private javax.swing.JLabel jLabelMensajeEnhorabuena;
+    private javax.swing.JLabel jLabelName;
+    private javax.swing.JPanel jPanelLogin;
     private javax.swing.JPanel jPanelLoginCorrecto;
+    private javax.swing.JPanel jPanelMain;
+    private javax.swing.JPanel jPanelPeliculas;
     private javax.swing.JPasswordField jPasswordFieldContraseña;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField jTextFieldUsuario;
     // End of variables declaration//GEN-END:variables
 }
