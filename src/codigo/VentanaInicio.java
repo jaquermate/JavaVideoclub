@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -27,10 +28,12 @@ public class VentanaInicio extends javax.swing.JFrame {
     Connection conexion;//almacena la conexion del servidor de BBDD
     Statement estado; //almacena el estado de la conexion
     ResultSet resultado;//amacena el resultado de la consulta a la BBDD
-    String nombreLogin ="";
-    String contraseña="";
-    int i=0;
-    
+    String nombreLogin = "";
+    String contraseña = "";
+    int i = 0;
+    static int CARATULA_X = 170;
+    static int CARATULA_Y = 250;
+
     /**
      * Creates new form VentanaInicio
      */
@@ -54,7 +57,6 @@ public class VentanaInicio extends javax.swing.JFrame {
                 System.out.println(resultado.getString("Nombre"));
             }
 
-           
         } catch (ClassNotFoundException ex) {
             System.out.println("No se ha encontrado el driver");
         } catch (SQLException ex) {
@@ -62,8 +64,40 @@ public class VentanaInicio extends javax.swing.JFrame {
         }
     }
 
+    public void pintaFoto(JLabel _miJLabel, String miRuta, boolean añadir) {
+        ImageIcon miImagen = null;
+        URL nombreImagen = null;
+        int anchoImagen = _miJLabel.getWidth();
+        int altoImagen = _miJLabel.getHeight();
+        nombreImagen = getClass().getResource(miRuta);
+        miImagen = new ImageIcon(new ImageIcon(nombreImagen).getImage().getScaledInstance(anchoImagen, altoImagen, Image.SCALE_DEFAULT));
+        _miJLabel.setIcon(miImagen);
+        if (añadir) {
+           // jPanel1.add(_miJLabel);
+        }
+    }
+
+    public void generaYRellenaLabelsPelis() {
+        int contadorPeli = 1;
+
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 5; col++) {
+                JLabel miJLabel = new JLabel();
+                miJLabel.setBounds(20 + col * (CARATULA_X + 20), 20 + row * (CARATULA_Y + 20), CARATULA_X, CARATULA_Y);
+                String ruta = "";
+                ruta = "/caratulas/" + String.format("%06d", contadorPeli) + ".jpg";
+                pintaFoto(miJLabel, ruta, true);
+                //pintaFoto(miJLabel, "/caratulas/000003.jpg", rootPaneCheckingEnabled);
+                jPanel1.add(miJLabel);
+                contadorPeli++;
+                //String.format("%06d", contadorPeli )
+
+            }
+        }
+    }
+
     public VentanaInicio() {
-        
+
         initComponents();
         jPanelLogin.setVisible(true);
         jLabelLoginError.setVisible(false);
@@ -71,7 +105,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         jPanelLoginCorrecto.setVisible(false);
         consulta1();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -88,7 +122,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         jPanelLogin = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jLabelOlvidoContraseña = new javax.swing.JLabel();
         jTextFieldUsuario = new javax.swing.JTextField();
         jButtonContinuar = new javax.swing.JButton();
         jLabelLoginError = new javax.swing.JLabel();
@@ -100,6 +134,9 @@ public class VentanaInicio extends javax.swing.JFrame {
         jLabelFotoUsuario = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jPanelPeliculas = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -158,10 +195,10 @@ public class VentanaInicio extends javax.swing.JFrame {
 
         jLabel2.setText("Contraseña:");
 
-        jLabel3.setText("He olvidado mi contraseña");
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabelOlvidoContraseña.setText("He olvidado mi contraseña");
+        jLabelOlvidoContraseña.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
+                jLabelOlvidoContraseñaMouseClicked(evt);
             }
         });
 
@@ -189,6 +226,11 @@ public class VentanaInicio extends javax.swing.JFrame {
         });
 
         jPasswordFieldContraseña.setText("5464521");
+        jPasswordFieldContraseña.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jPasswordFieldContraseñaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelLoginLayout = new javax.swing.GroupLayout(jPanelLogin);
         jPanelLogin.setLayout(jPanelLoginLayout);
@@ -202,7 +244,7 @@ public class VentanaInicio extends javax.swing.JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLoginLayout.createSequentialGroup()
                             .addComponent(jButtonRegistrarse)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabelOlvidoContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanelLoginLayout.createSequentialGroup()
                             .addGap(9, 9, 9)
                             .addGroup(jPanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -244,28 +286,55 @@ public class VentanaInicio extends javax.swing.JFrame {
                             .addGap(114, 114, 114)
                             .addComponent(jButtonContinuar)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3)))
+                            .addComponent(jLabelOlvidoContraseña)))
                     .addContainerGap()))
         );
 
         jLabelName.setText("jLabel4");
 
         jLabelFotoUsuario.setText("FotoUsuario");
+        jLabelFotoUsuario.setPreferredSize(new java.awt.Dimension(85, 16));
 
         jLabel4.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(102, 0, 0));
-        jLabel4.setText("Películas disponibles pa tu body");
+        jLabel4.setText("Películas disponibles");
         jLabel4.setToolTipText("");
+
+        jScrollPane1.setToolTipText("");
+
+        jLabel7.setText("jLabel7");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(856, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(745, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36))
+        );
+
+        jScrollPane1.setViewportView(jPanel1);
 
         javax.swing.GroupLayout jPanelPeliculasLayout = new javax.swing.GroupLayout(jPanelPeliculas);
         jPanelPeliculas.setLayout(jPanelPeliculasLayout);
         jPanelPeliculasLayout.setHorizontalGroup(
             jPanelPeliculasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanelPeliculasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1011, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanelPeliculasLayout.setVerticalGroup(
             jPanelPeliculasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 596, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanelMainLayout = new javax.swing.GroupLayout(jPanelMain);
@@ -273,37 +342,39 @@ public class VentanaInicio extends javax.swing.JFrame {
         jPanelMainLayout.setHorizontalGroup(
             jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMainLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelPeliculas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanelMainLayout.createSequentialGroup()
                 .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
                     .addGroup(jPanelMainLayout.createSequentialGroup()
                         .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelMainLayout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanelMainLayout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 249, Short.MAX_VALUE)))
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanelMainLayout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addComponent(jLabelFotoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
-            .addGroup(jPanelMainLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanelPeliculas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
         );
         jPanelMainLayout.setVerticalGroup(
             jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMainLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
                 .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelFotoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelMainLayout.createSequentialGroup()
-                        .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelMainLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabelFotoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jPanelPeliculas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -313,7 +384,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 949, Short.MAX_VALUE)
+            .addGap(0, 950, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -352,12 +423,16 @@ public class VentanaInicio extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+//TODO CODIGO QUE TIENE EL peli0
+
+    //peli2 = new javax.swing.JLabel();
+    //peli1 = new javax.swing.JLabel();
 
     private void jTextFieldUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUsuarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldUsuarioActionPerformed
 
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+    private void jLabelOlvidoContraseñaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelOlvidoContraseñaMouseClicked
         //jLabel3.setText("<html><a href="http://www.google.com/">Enlace</a></html>"));
         try {
             if (Desktop.isDesktopSupported()) {
@@ -369,16 +444,16 @@ public class VentanaInicio extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-    }//GEN-LAST:event_jLabel3MouseClicked
+
+    }//GEN-LAST:event_jLabelOlvidoContraseñaMouseClicked
 
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
 
     }//GEN-LAST:event_formKeyTyped
 
     private void jButtonRegistrarseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonRegistrarseMousePressed
-       this.setVisible(false);
-       new Registrarse().setVisible(true);
+        this.setVisible(false);
+        new Registrarse().setVisible(true);
     }//GEN-LAST:event_jButtonRegistrarseMousePressed
 
     private void jCheckBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox1MouseClicked
@@ -386,15 +461,11 @@ public class VentanaInicio extends javax.swing.JFrame {
         jPanelLoginCorrecto.setVisible(false);
         jPanelMain.setVisible(true);
         jLabelName.setText(nombreLogin);
-       
-        ImageIcon miImagen=null;
-        URL nombreImagen=null;
-        int anchoImagen=jLabelFotoUsuario.getWidth();
-        int altoImagen=jLabelFotoUsuario.getHeight();
-        nombreImagen=getClass().getResource("/fotosUsuarios/"+contraseña+".jpg");
-        miImagen = new ImageIcon(new ImageIcon(nombreImagen).getImage().getScaledInstance(anchoImagen,altoImagen,Image.SCALE_DEFAULT));
-        jLabelFotoUsuario.setIcon(miImagen);   
-        //miPag.setVisible(true);
+
+        pintaFoto(jLabelFotoUsuario, "/fotosUsuarios/" + contraseña + ".jpg", false);
+        //pintaFoto(peli0, "/caratulas/000001.jpg",false);
+        generaYRellenaLabelsPelis();
+
     }//GEN-LAST:event_jCheckBox1MouseClicked
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
@@ -404,12 +475,12 @@ public class VentanaInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
     private void jButtonContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonContinuarActionPerformed
-       jLabelLoginError.setVisible(false);
-       nombreLogin = jTextFieldUsuario.getText();
-       contraseña = jPasswordFieldContraseña.getText();
-       boolean usuarioEncontrado = false;
-       try {
-            
+        jLabelLoginError.setVisible(false);
+        nombreLogin = jTextFieldUsuario.getText();
+        contraseña = jPasswordFieldContraseña.getText();
+        boolean usuarioEncontrado = false;
+        try {
+
             //indico los parametros de la conexion
             conexion = DriverManager.getConnection("jdbc:mysql://10.211.55.8/videoclub", "root", "qwerty");
             //realizo la conexion
@@ -418,30 +489,33 @@ public class VentanaInicio extends javax.swing.JFrame {
             resultado = estado.executeQuery("SELECT * FROM videoclub.usuarios");
 
             while (!usuarioEncontrado && resultado.next()) {
-                if((resultado.getString("Nombre")+" "+(resultado.getString("Apellido"))).equals(nombreLogin) && resultado.getString("DNI").equals(contraseña)){
-                   
+                if ((resultado.getString("Nombre") + " " + (resultado.getString("Apellido"))).equals(nombreLogin) && resultado.getString("DNI").equals(contraseña)) {
+
                     jTextFieldUsuario.setText("Login Correcto");
                     System.out.println("ENHORABUENA");
-                    usuarioEncontrado=true;
+                    usuarioEncontrado = true;
                     jPanelLogin.setVisible(false);
                     jPanelLoginCorrecto.setVisible(true);
                     jPanelLoginCorrecto.setBounds(400, 400, 500, 800);
-                    jLabelMensajeEnhorabuena.setText("Enhorabuena "+nombreLogin+" has sido logueado correctamente");
-                     break;
-                    
+                    jLabelMensajeEnhorabuena.setText("Enhorabuena " + nombreLogin + " has sido logueado correctamente");
+                    break;
+
                 } else {
-                    jLabelLoginError.setVisible(true);  
+                    jLabelLoginError.setVisible(true);
                     //System.out.println("caca");
                 }
-                
+
             }
 
-           
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(VentanaInicio.class.getName()).log(Level.SEVERE, null, ex);
             jTextFieldUsuario.setText("Error");
         }
     }//GEN-LAST:event_jButtonContinuarActionPerformed
+
+    private void jPasswordFieldContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldContraseñaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPasswordFieldContraseñaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -474,8 +548,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new VentanaInicio().setVisible(true);
-               
-                
+
             }
         });
     }
@@ -487,17 +560,20 @@ public class VentanaInicio extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabelFotoUsuario;
     private javax.swing.JLabel jLabelLoginError;
     private javax.swing.JLabel jLabelMensajeEnhorabuena;
     private javax.swing.JLabel jLabelName;
+    private javax.swing.JLabel jLabelOlvidoContraseña;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelLogin;
     private javax.swing.JPanel jPanelLoginCorrecto;
     private javax.swing.JPanel jPanelMain;
     private javax.swing.JPanel jPanelPeliculas;
     private javax.swing.JPasswordField jPasswordFieldContraseña;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField jTextFieldUsuario;
     // End of variables declaration//GEN-END:variables
