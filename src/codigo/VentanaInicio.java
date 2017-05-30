@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -33,10 +34,45 @@ public class VentanaInicio extends javax.swing.JFrame {
     int i = 0;
     static int CARATULA_X = 170;
     static int CARATULA_Y = 250;
-
+    ArrayList <Pelicula> pelisAL=new ArrayList <Pelicula> ();
+   
+    
     /**
      * Creates new form VentanaInicio
      */
+    public void descargaDatosPelis(){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");            
+            conexion = DriverManager.getConnection("jdbc:mysql://10.211.55.8/videoclub", "root", "qwerty");
+            estado = conexion.createStatement();           
+            resultado = estado.executeQuery("SELECT * FROM videoclub.peliculas");
+
+            while (resultado.next()) {
+                Pelicula miPeli=new Pelicula();
+                miPeli.id_pelicula=resultado.getInt("id_pelicula");
+                miPeli.titulo=resultado.getString("titulo");
+                miPeli.ano=resultado.getInt("año");
+                miPeli.pais=resultado.getString("pais");
+                miPeli.genero=resultado.getString("genero");
+                miPeli.imdb=resultado.getInt("imdb");
+                miPeli.clasificacion_imdb=resultado.getString("clasificacion_imdb");
+                miPeli.resumen=resultado.getString("resumen");
+                
+                pelisAL.add(miPeli);
+                System.out.println(resultado.getInt("id_pelicula"));
+                System.out.println(resultado.getString("titulo"));
+
+//               
+               
+                
+            }
+
+        } catch (ClassNotFoundException ex) {
+            System.out.println("No se ha encontrado el driver");
+        } catch (SQLException ex) {
+            System.out.println("NO SE HA PODIDO CONECTAR CON EL SERVIDOR");
+        }
+    }
     public void consulta1() {
 
         try {
@@ -103,7 +139,8 @@ public class VentanaInicio extends javax.swing.JFrame {
         jLabelLoginError.setVisible(false);
         jPanelMain.setVisible(false);
         jPanelLoginCorrecto.setVisible(false);
-        consulta1();
+        
+        descargaDatosPelis();
     }
 
     /**
