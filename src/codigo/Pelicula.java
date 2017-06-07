@@ -5,6 +5,10 @@
  */
 package codigo;
 
+import java.awt.Image;
+import java.net.URL;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author jmartinezdejuan
@@ -18,5 +22,13 @@ public class Pelicula {
     int imdb;
     String clasificacion_imdb;
     String resumen;
+    ImageIcon fotoCaratula;
     
+    public ImageIcon cogeCaratula(String miRuta){
+        URL nombreImagen = getClass().getResource(miRuta);
+        fotoCaratula = new ImageIcon(new ImageIcon(nombreImagen).getImage().getScaledInstance(VentanaInicio.CARATULA_X , VentanaInicio.CARATULA_Y, Image.SCALE_DEFAULT));
+        return fotoCaratula;
+        //_miJLabel.setIcon(fotoCaratula);
+    }
+//    
 }

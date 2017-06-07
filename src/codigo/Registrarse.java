@@ -57,7 +57,6 @@ public class Registrarse extends javax.swing.JFrame {
             //realizo la conexion
             estado = conexion.createStatement();
             //realizo la consulta
-            
             estado.executeUpdate(miQuery);
 
     }
@@ -147,30 +146,28 @@ public class Registrarse extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addGap(23, 23, 23)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextFieldNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
-                            .addComponent(jTextFieldApellido)
-                            .addComponent(jTextFieldDNI)
-                            .addComponent(jTextFieldEmail))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
-                .addGap(406, 406, 406))
+                .addGap(66, 66, 66)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1))
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jTextFieldNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(jTextFieldApellido)
+                    .addComponent(jTextFieldDNI)
+                    .addComponent(jTextFieldEmail))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(287, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(249, 249, 249))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
+                .addGap(100, 100, 100)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -186,9 +183,9 @@ public class Registrarse extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(44, 44, 44)
                 .addComponent(jButton1)
-                .addContainerGap(211, Short.MAX_VALUE))
+                .addContainerGap(132, Short.MAX_VALUE))
         );
 
         pack();
@@ -200,8 +197,6 @@ public class Registrarse extends javax.swing.JFrame {
         valoresSQL = (valoresSQL + jTextFieldDNI.getText() + ", '" + jTextFieldNombre.getText() + "', '" + jTextFieldApellido.getText() + "', 0, '" + jTextFieldEmail.getText() + "'");
         System.out.println("hola" + valoresSQL);
         sintaxisPrevia = sintaxisPrevia + "INSERT INTO usuarios (DNI, Nombre, Apellido, Penalizacion, email) VALUES (";
-                
-        
         valoresSQL = sintaxisPrevia + valoresSQL + ");";
         try {
             añadeUsuario(valoresSQL);
@@ -209,16 +204,18 @@ public class Registrarse extends javax.swing.JFrame {
             Logger.getLogger(Registrarse.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println(valoresSQL);
-        copiaPortapapeles(valoresSQL);
-        jDialog1.setBounds(350, 200, 400, 200);
-        jDialog1.setVisible(true);
+//        copiaPortapapeles(valoresSQL);
+//        jDialog1.setBounds(350, 200, 400, 200);
+//        jDialog1.setVisible(true);
         //this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jToggleButtonAbrirNavMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButtonAbrirNavMousePressed
-        abreNavegador();
-        this.setVisible(false);
-        new VentanaInicio().setVisible(true);
+        //.setVisible(false);
+       // jPanel1.setVisible(true);
+//        abreNavegador();
+//        this.setVisible(false);
+//        new VentanaInicio().setVisible(true);
     }//GEN-LAST:event_jToggleButtonAbrirNavMousePressed
 
     /**

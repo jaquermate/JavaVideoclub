@@ -1,7 +1,10 @@
 package codigo;
 
 import java.awt.Desktop;
+import java.awt.FlowLayout;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.net.URL;
 import java.sql.Connection;
@@ -13,7 +16,10 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,43 +34,44 @@ public class VentanaInicio extends javax.swing.JFrame {
 
     Connection conexion;//almacena la conexion del servidor de BBDD
     Statement estado; //almacena el estado de la conexion
-    ResultSet resultado;//amacena el resultado de la consulta a la BBDD
+    ResultSet resultado,resultado2;//amacena el resultado de la consulta a la BBDD
     String nombreLogin = "";
     String contraseña = "";
     int i = 0;
-    static int CARATULA_X = 170;
-    static int CARATULA_Y = 250;
-    ArrayList <Pelicula> pelisAL=new ArrayList <Pelicula> ();
-   
-    
+    static int CARATULA_X = 80;
+    static int CARATULA_Y = 120;
+    ArrayList<Pelicula> pelisAL = new ArrayList<>();
+    ImageIcon []putaCaratuladeloshuevos=new ImageIcon[1000];
+    JInternalFrame nuevoFrame=  new JInternalFrame();
+
     /**
      * Creates new form VentanaInicio
      */
-    public void descargaDatosPelis(){
+    public void descargaDatosPelis() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");            
+            Class.forName("com.mysql.jdbc.Driver");
             conexion = DriverManager.getConnection("jdbc:mysql://10.211.55.8/videoclub", "root", "qwerty");
-            estado = conexion.createStatement();           
+            estado = conexion.createStatement();
             resultado = estado.executeQuery("SELECT * FROM videoclub.peliculas");
 
             while (resultado.next()) {
-                Pelicula miPeli=new Pelicula();
-                miPeli.id_pelicula=resultado.getInt("id_pelicula");
-                miPeli.titulo=resultado.getString("titulo");
-                miPeli.ano=resultado.getInt("año");
-                miPeli.pais=resultado.getString("pais");
-                miPeli.genero=resultado.getString("genero");
-                miPeli.imdb=resultado.getInt("imdb");
-                miPeli.clasificacion_imdb=resultado.getString("clasificacion_imdb");
-                miPeli.resumen=resultado.getString("resumen");
+                Pelicula miPeli = new Pelicula();
+                miPeli.id_pelicula = resultado.getInt("id_pelicula");
+                miPeli.titulo = resultado.getString("titulo");
+                miPeli.ano = resultado.getInt("año");
+                miPeli.pais = resultado.getString("pais");
+                miPeli.genero = resultado.getString("genero");
+                miPeli.imdb = resultado.getInt("imdb");
+                miPeli.clasificacion_imdb = resultado.getString("clasificacion_imdb");
+                miPeli.resumen = resultado.getString("resumen");
+                String urlPeli="/caratulas/" + String.format("%06d", miPeli.id_pelicula) + ".jpg";
+                URL nombreImagen = getClass().getResource(urlPeli);
+                miPeli.fotoCaratula=new ImageIcon(new ImageIcon(nombreImagen).getImage().getScaledInstance(VentanaInicio.CARATULA_X ,
+                        VentanaInicio.CARATULA_Y, Image.SCALE_DEFAULT));
+                putaCaratuladeloshuevos[i]=miPeli.fotoCaratula;
+                i++;
                 
                 pelisAL.add(miPeli);
-                System.out.println(resultado.getInt("id_pelicula"));
-                System.out.println(resultado.getString("titulo"));
-
-//               
-               
-                
             }
 
         } catch (ClassNotFoundException ex) {
@@ -72,6 +79,10 @@ public class VentanaInicio extends javax.swing.JFrame {
         } catch (SQLException ex) {
             System.out.println("NO SE HA PODIDO CONECTAR CON EL SERVIDOR");
         }
+    }
+    
+    public void ponFotoaCaratulas(){
+        
     }
     public void consulta1() {
 
@@ -109,25 +120,49 @@ public class VentanaInicio extends javax.swing.JFrame {
         miImagen = new ImageIcon(new ImageIcon(nombreImagen).getImage().getScaledInstance(anchoImagen, altoImagen, Image.SCALE_DEFAULT));
         _miJLabel.setIcon(miImagen);
         if (añadir) {
-           // jPanel1.add(_miJLabel);
+            // jPanel1.add(_miJLabel);
         }
     }
+    public void infoPeli(String numeroPeli) throws SQLException{
+                nuevoFrame=new JInternalFrame("INFO", true, true);
+                resultado2 = estado.executeQuery("SELECT * FROM videoclub.peliculas where id_pelicula='"+numeroPeli+"'");
+                while(resultado2.next()){
+                    titulo.setText(resultado2.getString("titulo"));
+                    ano.setText(Integer.toString(resultado2.getInt("año")));
+                    pais.setText(resultado2.getString("pais"));
+                    genero.setText(resultado2.getString("genero"));
+                    imdb.setText(Integer.toString(resultado2.getInt("imdb")));
+                    puntuacion_imdb.setText(resultado2.getString("clasificacion_imdb"));
+                    jTextArea1.setText(resultado2.getString("resumen"));
+                    
+                    
+                }
+               
+    }
 
-    public void generaYRellenaLabelsPelis() {
-        int contadorPeli = 1;
-
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 5; col++) {
+    public  void generaYRellenaLabelsPelis() {
+        jScrollPane1.setBounds(0, 0, 500, 400);
+        int a=0;
+        for (int row = 0; row < 7; row++) {
+            for (int col = 0; col < 11; col++) {
                 JLabel miJLabel = new JLabel();
                 miJLabel.setBounds(20 + col * (CARATULA_X + 20), 20 + row * (CARATULA_Y + 20), CARATULA_X, CARATULA_Y);
-                String ruta = "";
-                ruta = "/caratulas/" + String.format("%06d", contadorPeli) + ".jpg";
-                pintaFoto(miJLabel, ruta, true);
-                //pintaFoto(miJLabel, "/caratulas/000003.jpg", rootPaneCheckingEnabled);
+                miJLabel.setText(Integer.toString(a));
+                miJLabel.setIcon(putaCaratuladeloshuevos[a]);
+               
+                miJLabel.addMouseListener(new MouseAdapter() {
+                                public void mouseClicked(MouseEvent e){
+                                    try {
+                                        infoPeli(miJLabel.getText());
+                                        jInternalFrame1.setVisible(true);
+                                    } catch (SQLException ex) {
+                                        Logger.getLogger(VentanaInicio.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                    
+                                }
+                });
+                 a++;
                 jPanel1.add(miJLabel);
-                contadorPeli++;
-                //String.format("%06d", contadorPeli )
-
             }
         }
     }
@@ -139,7 +174,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         jLabelLoginError.setVisible(false);
         jPanelMain.setVisible(false);
         jPanelLoginCorrecto.setVisible(false);
-        
+
         descargaDatosPelis();
     }
 
@@ -173,14 +208,20 @@ public class VentanaInicio extends javax.swing.JFrame {
         jPanelPeliculas = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
+        jInternalFrame1 = new javax.swing.JInternalFrame();
+        titulo = new javax.swing.JLabel();
+        ano = new javax.swing.JLabel();
+        pais = new javax.swing.JLabel();
+        genero = new javax.swing.JLabel();
+        imdb = new javax.swing.JLabel();
+        puntuacion_imdb = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                formKeyTyped(evt);
-            }
-        });
 
         jLabelMensajeEnhorabuena.setText("jLabel1");
 
@@ -240,11 +281,6 @@ public class VentanaInicio extends javax.swing.JFrame {
         });
 
         jTextFieldUsuario.setText("Jesus Martinez");
-        jTextFieldUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldUsuarioActionPerformed(evt);
-            }
-        });
 
         jButtonContinuar.setText("Continuar");
         jButtonContinuar.addActionListener(new java.awt.event.ActionListener() {
@@ -263,11 +299,6 @@ public class VentanaInicio extends javax.swing.JFrame {
         });
 
         jPasswordFieldContraseña.setText("5464521");
-        jPasswordFieldContraseña.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordFieldContraseñaActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanelLoginLayout = new javax.swing.GroupLayout(jPanelLogin);
         jPanelLogin.setLayout(jPanelLoginLayout);
@@ -339,23 +370,116 @@ public class VentanaInicio extends javax.swing.JFrame {
 
         jScrollPane1.setToolTipText("");
 
-        jLabel7.setText("jLabel7");
+        jInternalFrame1.setClosable(true);
+        jInternalFrame1.setMaximizable(true);
+        jInternalFrame1.setResizable(true);
+        jInternalFrame1.setVisible(true);
+
+        titulo.setFont(new java.awt.Font("Malayalam Sangam MN", 1, 14)); // NOI18N
+        titulo.setText("jLabel5");
+        titulo.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        ano.setFont(new java.awt.Font("Malayalam Sangam MN", 1, 14)); // NOI18N
+        ano.setText("jLabel6");
+        ano.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        pais.setFont(new java.awt.Font("Malayalam Sangam MN", 1, 14)); // NOI18N
+        pais.setText("jLabel7");
+        pais.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        genero.setFont(new java.awt.Font("Malayalam Sangam MN", 1, 14)); // NOI18N
+        genero.setText("jLabel8");
+        genero.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        imdb.setFont(new java.awt.Font("Malayalam Sangam MN", 1, 14)); // NOI18N
+        imdb.setText("jLabel9");
+        imdb.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        puntuacion_imdb.setFont(new java.awt.Font("Malayalam Sangam MN", 1, 14)); // NOI18N
+        puntuacion_imdb.setText("jLabel10");
+        puntuacion_imdb.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        jLabel11.setFont(new java.awt.Font("Malayalam Sangam MN", 1, 14)); // NOI18N
+        jLabel11.setText("jLabel11");
+        jLabel11.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        jLabel12.setFont(new java.awt.Font("Malayalam Sangam MN", 1, 14)); // NOI18N
+        jLabel12.setText("jLabel12");
+        jLabel12.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        jLabel13.setFont(new java.awt.Font("Malayalam Sangam MN", 1, 14)); // NOI18N
+        jLabel13.setText("jLabel13");
+        jLabel13.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        jTextArea1.setEditable(false);
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane2.setViewportView(jTextArea1);
+
+        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
+        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
+        jInternalFrame1Layout.setHorizontalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel11)
+                    .addComponent(puntuacion_imdb)
+                    .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(imdb)
+                        .addComponent(genero)
+                        .addComponent(pais)
+                        .addComponent(ano)
+                        .addComponent(titulo)))
+                .addGap(151, 151, 151)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+        jInternalFrame1Layout.setVerticalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(titulo)
+                .addGap(18, 18, 18)
+                .addComponent(ano)
+                .addGap(18, 18, 18)
+                .addComponent(pais)
+                .addGap(18, 18, 18)
+                .addComponent(genero)
+                .addGap(18, 18, 18)
+                .addComponent(imdb)
+                .addGap(18, 18, 18)
+                .addComponent(puntuacion_imdb)
+                .addGap(17, 17, 17)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel12)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel13)
+                .addContainerGap(189, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jInternalFrame1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(856, Short.MAX_VALUE))
+                .addGap(372, 372, 372)
+                .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(770, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(745, Short.MAX_VALUE)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36))
+                .addGap(151, 151, 151)
+                .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(600, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(jPanel1);
@@ -365,13 +489,15 @@ public class VentanaInicio extends javax.swing.JFrame {
         jPanelPeliculasLayout.setHorizontalGroup(
             jPanelPeliculasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelPeliculasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1011, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(6, 6, 6)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1186, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
         );
         jPanelPeliculasLayout.setVerticalGroup(
             jPanelPeliculasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
+            .addGroup(jPanelPeliculasLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelMainLayout = new javax.swing.GroupLayout(jPanelMain);
@@ -394,9 +520,9 @@ public class VentanaInicio extends javax.swing.JFrame {
                                 .addGap(21, 21, 21)
                                 .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelFotoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                .addGap(39, 39, 39))
         );
         jPanelMainLayout.setVerticalGroup(
             jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -421,7 +547,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 950, Short.MAX_VALUE)
+            .addGap(0, 1896, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -440,7 +566,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 978, Short.MAX_VALUE)
+            .addGap(0, 1475, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -462,13 +588,6 @@ public class VentanaInicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 //TODO CODIGO QUE TIENE EL peli0
 
-    //peli2 = new javax.swing.JLabel();
-    //peli1 = new javax.swing.JLabel();
-
-    private void jTextFieldUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUsuarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldUsuarioActionPerformed
-
     private void jLabelOlvidoContraseñaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelOlvidoContraseñaMouseClicked
         //jLabel3.setText("<html><a href="http://www.google.com/">Enlace</a></html>"));
         try {
@@ -484,10 +603,6 @@ public class VentanaInicio extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jLabelOlvidoContraseñaMouseClicked
 
-    private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
-
-    }//GEN-LAST:event_formKeyTyped
-
     private void jButtonRegistrarseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonRegistrarseMousePressed
         this.setVisible(false);
         new Registrarse().setVisible(true);
@@ -498,10 +613,11 @@ public class VentanaInicio extends javax.swing.JFrame {
         jPanelLoginCorrecto.setVisible(false);
         jPanelMain.setVisible(true);
         jLabelName.setText(nombreLogin);
-
+       
         pintaFoto(jLabelFotoUsuario, "/fotosUsuarios/" + contraseña + ".jpg", false);
         //pintaFoto(peli0, "/caratulas/000001.jpg",false);
         generaYRellenaLabelsPelis();
+        jInternalFrame1.setVisible(false);
 
     }//GEN-LAST:event_jCheckBox1MouseClicked
 
@@ -539,7 +655,7 @@ public class VentanaInicio extends javax.swing.JFrame {
 
                 } else {
                     jLabelLoginError.setVisible(true);
-                    //System.out.println("caca");
+                   
                 }
 
             }
@@ -549,10 +665,6 @@ public class VentanaInicio extends javax.swing.JFrame {
             jTextFieldUsuario.setText("Error");
         }
     }//GEN-LAST:event_jButtonContinuarActionPerformed
-
-    private void jPasswordFieldContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldContraseñaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordFieldContraseñaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -589,16 +701,22 @@ public class VentanaInicio extends javax.swing.JFrame {
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel ano;
+    private javax.swing.JLabel genero;
+    private javax.swing.JLabel imdb;
     private javax.swing.JButton jButtonContinuar;
     private javax.swing.JButton jButtonRegistrarse;
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabelFotoUsuario;
     private javax.swing.JLabel jLabelLoginError;
     private javax.swing.JLabel jLabelMensajeEnhorabuena;
@@ -611,7 +729,12 @@ public class VentanaInicio extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelPeliculas;
     private javax.swing.JPasswordField jPasswordFieldContraseña;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextFieldUsuario;
+    private javax.swing.JLabel pais;
+    private javax.swing.JLabel puntuacion_imdb;
+    private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }
